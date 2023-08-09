@@ -1,0 +1,137 @@
+/res/values/dimens.xml
+
+<resources>
+    <dimen name="main_screen_main_layout_padding">5dp</dimen>
+</resources>
+
+
+--------------------------------------------------------------------------------------
+
+/res/values/colors.xml
+
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#B2212121</color>
+    <color name="colorPrimaryDark">#B2212121</color>
+    <color name="colorAccent">#008F24</color>
+</resources>
+
+--------------------------------------------------------------------------------------
+
+/res/values/strings.xml
+
+<resources>
+    <string name="app_name">Home Academy</string>
+    <string name="image">image</string>
+</resources>
+
+
+--------------------------------------------------------------------------------------
+
+/res/drawable/item_circular_color_accent_border.xml
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <stroke
+        android:width="5dp"
+        android:color="@color/colorAccent" />
+    <solid android:color="#FFFFFF" />
+</shape>
+
+--------------------------------------------------------------------------------------
+
+/res/drawable/item_color_accent_border_ripple_background.xml
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#C4C4C4">
+    <item android:id="@android:id/mask">
+        <shape android:shape="oval">
+            <solid android:color="#000000" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/item_circular_color_accent_border" />
+</ripple>
+
+--------------------------------------------------------------------------------------
+
+/res/drawable-v24/ic_launcher_foreground.xml
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#C4C4C4">
+    <item android:id="@android:id/mask">
+        <shape android:shape="oval">
+            <solid android:color="#000000" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/item_circular_color_accent_border" />
+</ripple>
+
+--------------------------------------------------------------------------------------
+
+/res/layout/activity_main.xml
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/main_screen_main_layout_padding"
+    tools:context=".MainActivity">
+
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/flStart"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:contentDescription="@string/image"
+        android:src="@drawable/img_main_page" />
+
+    <FrameLayout
+        android:id="@+id/flStart"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/item_color_accent_border_ripple_background">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="START"
+            android:layout_gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+MainActivity.kt
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.FrameLayout
+import android.widget.Toast
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val fLStartButton : FrameLayout = findViewById(R.id.flStart)
+        fLStartButton.setOnClickListener {
+            Toast.makeText(this@MainActivity, "Start the App.", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
