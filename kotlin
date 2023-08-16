@@ -1,0 +1,31 @@
+aula kotlin 16/08
+
+activity - telas, janelas, descricao da interface gráfica
+o mais importe das activities sao os layouts: 
+	constraint layout - escreve a interface gráfica via relação dos elementos, restringe a maneira como o elemento aparece em relação ao outro.
+	linear layout - a ordem que colocar é a aordem que vai aparecer (vertical ou horizontal)
+	frame layout - semelhante ao constraint, mas com mais liberdade para posicionar e mudar o tamanho dos elementos da interface gráfica.
+
+localização: adaptar um aplicativo para outro país
+
+MainActivity
+onCreate - primeira função a ser chamada, correspondente ao main em Java
+
+
+viewBinding true - cria arquivos de configuracao, gerando uma referencia para acessar
+
+bit map
+
+kotlin nao permite que uma variavel seja null a menos que use o sinal de interrogação
+exemplo: private var binding: ActivityMainBinding? = null
+
+
+intent
+startActivity(nome da variavel criada)
+exemplo: binding?.flStart?.setOnClickListener {
+            val intent = Intent(this,ExerciseActivity::class.java)
+            startActivity(intent)
+        }
+
+
+actionBar
