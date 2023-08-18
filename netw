@@ -1,0 +1,13 @@
+criptografia assimetrica
+são usadas duas chaves para criptografar e decriptar
+uma chave é pública e a outra é privada
+somente a chave privada pode decriptar quando foi usada a chava publica para criptografar
+
+criptografia assimetrica é mais segura que criptografia simetrica pois a criptografia simetrica usa apenas uma chave
+
+usar a chave privada para criptografar tem autenticidade mas nao cofidencialidade pq qualquer pessoa pode acessar a have publica
+para ter autenticidade e confidencialidade é preciso criptografar com a chave publica e com a chave privada
+
+
+- criptografia quantica
+- chave publica e privada
