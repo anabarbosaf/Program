@@ -1,0 +1,433 @@
+/res/drawable/circular_progress_bar.xml
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:innerRadiusRatio="2.7"
+            android:shape="ring"
+            android:thicknessRatio="50.0"
+            android:useLevel="true">
+
+            <solid android:color="@color/colorAccent" />
+
+        </shape>
+    </item>
+</layer-list>
+
+
+------------------------------------------------------------------------------------------------------------------
+
+/res/drawable/circular_progress_gray.xml
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:innerRadiusRatio="2.7"
+            android:shape="ring"
+            android:thicknessRatio="50.0"
+            android:useLevel="false">
+
+            <solid android:color="#D4DEE7" />
+        </shape>
+    </item>
+</layer-list>
+
+
+------------------------------------------------------------------------------------------------------------------
+
+/res/drawable/item_circular_color_accent_background.xml
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <solid android:color="@color/colorAccent"/>
+</shape>
+
+
+------------------------------------------------------------------------------------------------------------------
+
+/res/drawable/item_circular_color_accent_border.xml
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <stroke
+        android:width="5dp"
+        android:color="@color/colorAccent" />
+
+    <solid android:color="#FFFFFF" />
+</shape>
+
+
+------------------------------------------------------------------------------------------------------------------
+
+/res/layout/activity_exercise.xml
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ExerciseActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarExercise"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#ffffff"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GET READY FOR"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/flProgressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/flProgressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/item_circular_color_accent_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarExercise">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circular_progress_gray"
+            android:indeterminate="false"
+            android:max="10"
+            android:progress="100"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:rotation="-90" />
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/item_circular_color_accent_background"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:text="10" />
+        </LinearLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+------------------------------------------------------------------------------------------------------------------
+
+ExerciseActivity
+
+package com.example.homeacademy
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.CountDownTimer
+import android.widget.Toast
+import com.example.homeacademy.databinding.ActivityExerciseBinding
+
+class ExerciseActivity : AppCompatActivity() {
+    private var binding: ActivityExerciseBinding? = null
+    private var restTimer: CountDownTimer? = null
+    private var restProgress = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityExerciseBinding.inflate(layoutInflater)
+
+        setContentView(binding?.root)
+        setSupportActionBar(binding?.toolbarExercise)
+
+        if (supportActionBar != null){
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+
+        binding?.toolbarExercise?.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        setupRestView()
+    }
+
+    private fun setupRestView() {
+        if (restTimer != null) {
+            restTimer!!.cancel()
+            restProgress = 0
+        }
+
+        setRestProgressBar()
+    }
+
+    private fun setRestProgressBar() {
+        binding?.progressBar?.progress = restProgress
+
+        restTimer = object : CountDownTimer(10000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                restProgress++
+                binding?.progressBar?.progress = 10 - restProgress
+                binding?.tvTimer?.text = (10 - restProgress).toString()
+            }
+
+            override fun onFinish() {
+                Toast.makeText(this@ExerciseActivity, "Start the exercise.", Toast.LENGTH_SHORT).show()
+            }
+        }.start()
+    }
+
+    public override fun onDestroy() {
+        if (restTimer != null) {
+            restTimer?.cancel()
+            restProgress = 0
+        }
+        super.onDestroy()
+        binding = null
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------------------
+
+/res/layout/activity_exercise.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ExerciseActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarExercise"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#ffffff"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GET READY FOR"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/flProgressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/flProgressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        tools:visibility="gone"
+        android:background="@drawable/item_circular_color_accent_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarExercise">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circular_progress_gray"
+            android:indeterminate="false"
+            android:max="10"
+            android:progress="100"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:rotation="-90" />
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/item_circular_color_accent_background"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:text="10" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/flExerciseView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:background="@drawable/item_circular_color_accent_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarExercise">
+
+        <ProgressBar
+            android:id="@+id/progressBarExercise"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circular_progress_gray"
+            android:indeterminate="false"
+            android:max="10"
+            android:progress="100"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:rotation="-90" />
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/item_circular_color_accent_background"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvTimerExercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:text="10" />
+        </LinearLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+------------------------------------------------------------------------------------------------------------------
+
+ExerciseActivity
+
+package com.example.homeacademy
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.CountDownTimer
+import android.view.View
+import android.widget.Toast
+import com.example.homeacademy.databinding.ActivityExerciseBinding
+
+class ExerciseActivity : AppCompatActivity() {
+    private var binding: ActivityExerciseBinding? = null
+    private var restTimer: CountDownTimer? = null
+    private var restProgress = 0
+    private var exerciseTimer: CountDownTimer? = null
+    private var exerciseProgress = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityExerciseBinding.inflate(layoutInflater)
+
+        setContentView(binding?.root)
+        setSupportActionBar(binding?.toolbarExercise)
+
+        if (supportActionBar != null){
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+
+        binding?.toolbarExercise?.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        setupRestView()
+    }
+
+    private fun setupRestView() {
+        if (restTimer != null) {
+            restTimer!!.cancel()
+            restProgress = 0
+        }
+
+        setRestProgressBar()
+    }
+
+    private fun setRestProgressBar() {
+        binding?.progressBar?.progress = restProgress
+
+        restTimer = object : CountDownTimer(10000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                restProgress++
+                binding?.progressBar?.progress = 10 - restProgress
+                binding?.tvTimer?.text = (10 - restProgress).toString()
+            }
+
+            override fun onFinish() {
+                setupExerciseView()
+            }
+        }.start()
+    }
+
+    private fun setupExerciseView() {
+        binding?.flProgressBar?.visibility = View.INVISIBLE
+        binding?.tvTitle?.text = "Exercise Name"
+        binding?.flExerciseView?.visibility = View.VISIBLE
+
+        if (exerciseTimer != null) {
+            exerciseTimer?.cancel()
+            exerciseProgress = 0
+        }
+
+        setExerciseProgressBar()
+    }
+
+    private fun setExerciseProgressBar() {
+        binding?.progressBarExercise?.progress = exerciseProgress
+
+        exerciseTimer = object : CountDownTimer(30000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                exerciseProgress++
+                binding?.progressBarExercise?.progress = 30 - exerciseProgress
+                binding?.tvTimerExercise?.text = (30 - exerciseProgress).toString()
+            }
+
+            override fun onFinish() {
+                Toast.makeText(this@ExerciseActivity, "30 seconds completed.", Toast.LENGTH_SHORT).show()
+            }
+        }.start()
+    }
+
+    public override fun onDestroy() {
+        if (restTimer != null) {
+            restTimer?.cancel()
+            restProgress = 0
+        }
+        super.onDestroy()
+        binding = null
+    }
+}
