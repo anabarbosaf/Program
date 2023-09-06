@@ -1,0 +1,159 @@
+/Gradle Scripts/build.gradle(Module:app)
+
+dentro de 
+
+android {
+    ...
+
+    buildFeatures {
+        viewBinding true
+    }
+
+Sync
+
+------------------------------------------------------------------------------------------------------------------
+
+/res/values/colors.xml
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#B2212121</color>
+    <color name="colorPrimaryDark">#B2212121</color>
+    <color name="colorAccent">#008F24</color>
+    <color name="toolbar_color_control_normal">#000000</color>
+</resources>
+
+
+------------------------------------------------------------------------------------------------------------------
+
+/res/values/themes.xml
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.Homeacademy" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="colorControlNormal" >@color/toolbar_color_control_normal</item>
+    </style>
+
+    <style name="Theme.Homeacademy" parent="Base.Theme.Homeacademy" />
+</resources>
+
+
+------------------------------------------------------------------------------------------------------------------
+
+MainActivity
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Toast
+import com.example.homeacademy.databinding.ActivityMainBinding
+
+class MainActivity : AppCompatActivity() {
+    private var binding: ActivityMainBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+
+        binding?.flStart?.setOnClickListener {
+            Toast.makeText(this@MainActivity, "Start the App.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------------------
+
+Criar uma nova activity em branco, ExerciseActivity
+
+Em MainActivity
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.content.Intent
+import com.example.homeacademy.databinding.ActivityMainBinding
+
+class MainActivity : AppCompatActivity() {
+    private var binding: ActivityMainBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+
+        binding?.flStart?.setOnClickListener {
+            val intent = Intent(this,ExerciseActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------------------
+
+/res/layout/activity_exercise.xml
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ExerciseActivity">
+    
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarExercise"
+        android:layout_width="match_parent"
+        android:theme="@style/ToolbarTheme"
+        app:titleTextColor="@color/colorPrimary"
+        android:background="@color/white"
+        android:layout_height="?android:attr/actionBarSize"/>
+
+</RelativeLayout>
+
+
+------------------------------------------------------------------------------------------------------------------
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import eu.tutorials.a7_minutesworkoutapp.databinding.ActivityExerciseBinding
+
+class ExerciseActivity : AppCompatActivity() {
+    private var binding:ActivityExerciseBinding? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityExerciseBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+        setSupportActionBar(binding?.toolbarExercise)
+
+        if (supportActionBar != null){
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+
+        binding?.toolbarExercise?.setNavigationOnClickListener {
+            onBackPressed()
+        }
+    }
+}
