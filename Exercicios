@@ -1,0 +1,371 @@
+Incluir as imagens em /res/drawable
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Criar as classes 
+
+class ExerciseModel(
+    private var id: Int,
+    private var name: String,
+    private var image: Int,
+    private var isCompleted: Boolean,
+    private var isSelected: Boolean) {
+
+    fun getId(): Int {
+        return id
+    }
+
+    fun setId(id: Int) {
+        this.id = id
+    }
+
+    fun getName(): String {
+        return name
+    }
+
+    fun setName(name: String) {
+        this.name = name
+    }
+
+    fun getImage(): Int {
+        return image
+    }
+
+    fun setImage(image: Int) {
+        this.image = image
+    }
+
+    fun getIsCompleted(): Boolean {
+        return isCompleted
+    }
+
+    fun setIsCompleted(isCompleted: Boolean) {
+        this.isCompleted = isCompleted
+    }
+
+    fun getIsSelected(): Boolean {
+        return isSelected
+    }
+
+    fun setIsSelected(isSelected: Boolean) {
+        this.isSelected = isSelected
+    }
+}
+
+
+
+import java.util.*
+
+object Constants {
+
+        fun defaultExerciseList(): ArrayList<ExerciseModel> {
+            val exerciseList = ArrayList<ExerciseModel>()
+
+            val jumpingJacks =  ExerciseModel(1, "Jumping Jacks", R.drawable.ic_jumping_jacks, false, false)
+            exerciseList.add(jumpingJacks)
+
+            val wallSit = ExerciseModel(2, "Wall Sit", R.drawable.ic_wall_sit, false, false)
+            exerciseList.add(wallSit)
+
+            val pushUp = ExerciseModel(3, "Push Up", R.drawable.ic_push_up, false, false)
+            exerciseList.add(pushUp)
+
+            val abdominalCrunch = ExerciseModel(4, "Abdominal Crunch", R.drawable.ic_abdominal_crunch, false, false)
+            exerciseList.add(abdominalCrunch)
+
+            val stepUpOnChair = ExerciseModel(5, "Step-Up onto Chair", R.drawable.ic_step_up_onto_chair, false, false)
+            exerciseList.add(stepUpOnChair)
+
+            val squat = ExerciseModel(6, "Squat", R.drawable.ic_squat, false, false)
+            exerciseList.add(squat)
+
+            val tricepDipOnChair = ExerciseModel(7, "Tricep Dip On Chair", R.drawable.ic_triceps_dip_on_chair, false, false)
+            exerciseList.add(tricepDipOnChair)
+
+            val plank = ExerciseModel(8, "Plank", R.drawable.ic_plank, false, false)
+            exerciseList.add(plank)
+
+            val highKneesRunningInPlace = ExerciseModel(9, "High Knees Running In Place", R.drawable.ic_high_knees_running_in_place,
+                false, false)
+            exerciseList.add(highKneesRunningInPlace)
+
+            val lunges = ExerciseModel(10, "Lunges", R.drawable.ic_lunge, false, false)
+            exerciseList.add(lunges)
+
+            val pushupAndRotation = ExerciseModel(11, "Push up and Rotation", R.drawable.ic_push_up_and_rotation, false, false)
+            exerciseList.add(pushupAndRotation)
+
+            val sidePlank = ExerciseModel(12, "Side Plank", R.drawable.ic_side_plank, false, false)
+            exerciseList.add(sidePlank)
+
+            return exerciseList
+        }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+/res/layout/activity_exercise.xml
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ExerciseActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarExercise"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#ffffff"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GET READY FOR"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/flRestView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/flRestView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/item_circular_color_accent_border"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarExercise"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circular_progress_gray"
+            android:indeterminate="false"
+            android:max="10"
+            android:progress="100"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:rotation="-90" />
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/item_circular_color_accent_background"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:text="10" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:contentDescription="@string/image"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_jumping_jacks"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/tvExerciseName"
+        app:layout_constraintTop_toBottomOf="@id/toolbarExercise" />
+
+    <TextView
+        android:id="@+id/tvExerciseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ExerciseName"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivImage"
+        tools:visibility="visible" />
+
+    <FrameLayout
+        android:id="@+id/flExerciseView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/item_circular_color_accent_border"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvExerciseName"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progressBarExercise"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circular_progress_gray"
+            android:indeterminate="false"
+            android:max="30"
+            android:progress="100"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:rotation="-90" />
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/item_circular_color_accent_background"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvTimerExercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:text="10" />
+        </LinearLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Atualizar ExerciseActivity.kt
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.CountDownTimer
+import android.view.View
+import android.widget.Toast
+import com.example.homeacademy.databinding.ActivityExerciseBinding
+
+class ExerciseActivity : AppCompatActivity() {
+    private var restTimer: CountDownTimer? = null
+    private var restProgress = 0
+    private var exerciseTimer: CountDownTimer? = null
+    private var exerciseProgress = 0
+    private var exerciseTimerDuration:Long = 30
+    private var exerciseList: ArrayList<ExerciseModel>? = null
+    private var currentExercisePosition = -1
+    private var binding:ActivityExerciseBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityExerciseBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+        setSupportActionBar(binding?.toolbarExercise)
+
+        if (supportActionBar != null){
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+        binding?.toolbarExercise?.setNavigationOnClickListener {
+            onBackPressed()
+        }
+        exerciseList = Constants.defaultExerciseList()
+        setupRestView()
+    }
+
+    private fun setupRestView() {
+        binding?.flRestView?.visibility = View.VISIBLE
+        binding?.tvTitle?.visibility = View.VISIBLE
+        binding?.tvExerciseName?.visibility = View.INVISIBLE
+        binding?.flExerciseView?.visibility = View.INVISIBLE
+        binding?.ivImage?.visibility = View.INVISIBLE
+
+        if (restTimer != null) {
+            restTimer?.cancel()
+            restProgress = 0
+        }
+
+        setRestProgressBar()
+    }
+
+    private fun setRestProgressBar() {
+        binding?.progressBar?.progress = restProgress
+        restTimer = object : CountDownTimer(10000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                restProgress++
+                binding?.progressBar?.progress = 10 - restProgress
+                binding?.tvTimer?.text = (10 - restProgress).toString()
+            }
+
+            override fun onFinish() {
+                currentExercisePosition++
+                setupExerciseView()
+            }
+        }.start()
+    }
+
+    private fun setupExerciseView() {
+        binding?.flRestView?.visibility = View.INVISIBLE
+        binding?.tvTitle?.visibility = View.INVISIBLE
+        binding?.tvExerciseName?.visibility = View.VISIBLE
+        binding?.flExerciseView?.visibility = View.VISIBLE
+        binding?.ivImage?.visibility = View.VISIBLE
+
+        if (exerciseTimer != null) {
+            exerciseTimer?.cancel()
+            exerciseProgress = 0
+        }
+
+        binding?.ivImage?.setImageResource(exerciseList!![currentExercisePosition].getImage())
+        binding?.tvExerciseName?.text = exerciseList!![currentExercisePosition].getName()
+        setExerciseProgressBar()
+    }
+
+    private fun setExerciseProgressBar() {
+        binding?.progressBarExercise?.progress = exerciseProgress
+
+        exerciseTimer = object : CountDownTimer(exerciseTimerDuration * 1000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                exerciseProgress++
+                binding?.progressBarExercise?.progress = exerciseTimerDuration.toInt() - exerciseProgress
+                binding?.tvTimerExercise?.text = (exerciseTimerDuration.toInt() - exerciseProgress).toString()
+            }
+
+            override fun onFinish() {
+                if (currentExercisePosition < exerciseList?.size!! - 1) {
+                    setupRestView()
+                } else {
+                    Toast.makeText(
+                        this@ExerciseActivity,
+                        "Congratulations! You have completed the 7 minutes workout.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }.start()
+    }
+
+    public override fun onDestroy() {
+        if (restTimer != null) {
+            restTimer?.cancel()
+            restProgress = 0
+        }
+        super.onDestroy()
+        binding = null
+    }
+}
